@@ -6,6 +6,8 @@ export const GlobalStyle = createGlobalStyle`
   --black: #000;
   --black-1: #111;
   --white: #fff;
+  --white-1: #eee;
+  --white-2: #ddd;
   --gray: #565867;
 }
 
@@ -42,9 +44,10 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   body{
-    background: url("/banner-landing-page.jpg");
+    background: url("/images/banner-landing-page.jpg");
     background-size: cover;
     background-repeat: no-repeat;
+    background-attachment: fixed;
 
     height: 100vh;
   }

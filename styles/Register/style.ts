@@ -14,7 +14,7 @@ export const Main = styled.main`
     background-color: var(--black-1);
 
     padding: 1.5rem;
-    margin: 2rem 0;
+    margin: 1rem 0;
 
     border-radius: 0.625rem;
 
@@ -22,7 +22,7 @@ export const Main = styled.main`
 
     @media only screen and (min-width: 480px) {
       & {
-        width: 410px;
+        width: 430px;
       }
     }
 

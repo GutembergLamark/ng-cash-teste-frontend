@@ -156,11 +156,14 @@ export const Heading = styled.header<IClickDropdown>`
         background: none;
 
         position: inherit;
+
+        z-index: 0;
       }
     }
 
     a {
       border-bottom: 2px solid transparent;
+      border-radius: 0;
 
       padding: 0.625rem;
 
