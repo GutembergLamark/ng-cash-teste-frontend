@@ -208,7 +208,6 @@ export const Main = styled.main`
 
       @media only screen and (min-width: 768px) {
         li {
-
           h3 {
             width: 15%;
           }
@@ -221,6 +220,19 @@ export const Main = styled.main`
             width: 25%;
           }
         }
+      }
+    }
+
+    .container-empty {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      height: 30%;
+
+      .empty-transaction {
+        color: var(--white);
+        text-align: center;
       }
     }
 

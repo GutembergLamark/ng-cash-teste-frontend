@@ -168,30 +168,38 @@ const Dashboard = ({ dataUser }: IPropsDashboard) => {
               }}
             />
           </div>
-          <ul>
-            {filterTransactions.map((transaction) => {
-              const date = new Date(transaction.createdAt);
+          {filterTransactions.length > 0 ? (
+            <ul>
+              {filterTransactions.map((transaction) => {
+                const date = new Date(transaction.createdAt);
 
-              const dateFormated = `${date.getDate()}/
+                const dateFormated = `${date.getDate()}/
                 ${
                   date.getMonth() + 1
                 }/${date.getFullYear()} - ${date.getHours()}h${date.getMinutes()}`;
 
-              return (
-                <li key={transaction.id}>
-                  <h3
-                    className={
-                      transaction.type === "Cash In" ? "cashin" : "cashout"
-                    }
-                  >
-                    {transaction.type}
-                  </h3>
-                  <strong>R$ {transaction.value}</strong>
-                  <p>{dateFormated}</p>
-                </li>
-              );
-            })}
-          </ul>
+                return (
+                  <li key={transaction.id}>
+                    <h3
+                      className={
+                        transaction.type === "Cash In" ? "cashin" : "cashout"
+                      }
+                    >
+                      {transaction.type}
+                    </h3>
+                    <strong>R$ {transaction.value}</strong>
+                    <p>{dateFormated}</p>
+                  </li>
+                );
+              })}
+            </ul>
+          ) : (
+            <div className="container-empty">
+              <h1 className="empty-transaction">
+                Ainda não existem transações...
+              </h1>
+            </div>
+          )}
 
           <Modals />
         </section>
