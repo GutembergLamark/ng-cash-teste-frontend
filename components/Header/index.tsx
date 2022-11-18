@@ -1,16 +1,15 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import Image from "next/image";
 import { useRouter } from "next/router";
 
-import nookies, { parseCookies } from "nookies";
+import { destroyCookie } from "nookies";
 
 import Link from "next/link";
 
-import { IProps } from "./types";
 import { Heading } from "./style";
 
-const Header = ({ props }: IProps) => {
+const Header = () => {
   const [click, setClick] = useState<boolean>(false);
 
   const router = useRouter();
@@ -37,17 +36,9 @@ const Header = ({ props }: IProps) => {
           {slug === "dashboard" ? (
             <div className="dropdown__content">
               <Link
-                href="/dashboard"
-                onClick={() => {
-                  setClick(false);
-                }}
-              >
-                Conta
-              </Link>
-              <Link
                 href="/"
                 onClick={() => {
-                  nookies.destroy(null, "NG_TOKEN");
+                  destroyCookie(null, "NG_TOKEN");
                   setClick(false);
                 }}
               >
@@ -81,14 +72,3 @@ const Header = ({ props }: IProps) => {
 };
 
 export default Header;
-
-export const getServerSideProps = (context: any) => {
-  const cookies = parseCookies(context);
-  console.log(context);
-
-  return {
-    props: {
-      NG_TOKEN: cookies.NG_TOKEN,
-    },
-  };
-};

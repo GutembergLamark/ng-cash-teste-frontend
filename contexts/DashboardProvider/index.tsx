@@ -12,19 +12,27 @@ import {
   IDashboardContext,
   IProps,
   ISubmitTransaction,
+  ISubmitTransactionResponse,
   ITransaction,
   IUser,
 } from "./types";
+import { AxiosError } from "axios";
+import { type } from "os";
 
 export const DashboardContext = createContext<IDashboardContext>(
   {} as IDashboardContext
 );
 
-const DashboardProvider = ({ children, props }: IProps) => {
+const DashboardProvider = ({ children }: IProps) => {
   const [transactions, setTransactions] = useState<ITransaction[]>([]);
-  const [user, setUser] = useState<IUser>({} as IUser);
+  const [user, setUser] = useState<IUser | null>(null);
+  const [filterType, setFilterType] = useState<string>("Todos");
+  const [filterTransactions, setFilterTransactions] = useState<ITransaction[]>(
+    []
+  );
 
   const {
+    reset,
     register,
     handleSubmit,
     formState: { errors },
@@ -32,67 +40,114 @@ const DashboardProvider = ({ children, props }: IProps) => {
     resolver: yupResolver(schemaCreateTransaction),
   });
 
-  useEffect(() => {}, []);
+  const filterTransactionDate = (date: string) => {
+    setFilterTransactions(
+      transactions.filter((transaction) => {
+        const createdAt = new Date(transaction.createdAt);
+        const dateFormated = `${createdAt.getFullYear()}-${
+          createdAt.getMonth() + 1
+        }-${createdAt.getDate()}`;
+        console.log(dateFormated);
 
-  useEffect(() => {
-    const loadUser = async () => {
-      const token = props?.NG_TOKEN;
+        return dateFormated === date;
+      })
+    );
+  };
 
-      if (token) {
-        try {
-          api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-          const {
-            data: { user },
-          } = await api.get("/profile");
-          setUser(user);
-        } catch (error) {
-          toast.error("Ops! Algo deu errado");
-        }
-      }
-    };
+  const filterTransactionType = (type?: string) => {
+    type
+      ? setFilterTransactions(
+          transactions.filter((transaction) => transaction.type === type)
+        )
+      : setFilterTransactions(transactions);
+  };
 
-    loadUser();
-    listAllTransactions();
-  }, []);
+  const listAllTransactions = (user: IUser) => {
+    const debitedTransactions = setTypeTransactions(
+      user.account.debitedTransactions,
+      "Cash Out"
+    );
+    const creditedTransactions = setTypeTransactions(
+      user.account.creditedTransactions,
+      "Cash In"
+    );
+    setTransactions(
+      orderByListDate([...debitedTransactions, ...creditedTransactions])
+    );
 
-  const listAllTransactions = async () => {
-    const token = props?.NG_TOKEN;
+    setFilterTransactions(
+      orderByListDate([...debitedTransactions, ...creditedTransactions])
+    );
+  };
 
-    if (token) {
-      try {
-        api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-        const {
-          data: { account },
-        } = await api.get("/users/account");
-        setTransactions([
-          ...account.creditedTransactions,
-          ...account.debitedTransactions,
-        ]);
-      } catch (err) {
-        console.log(err);
-      }
-    }
+  const orderByListDate = (list: ITransaction[]) => {
+    return list.sort(
+      (a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt)
+    );
+  };
+
+  const setTypeTransactions = (list: ITransaction[], type: string) => {
+    const listType: ITransaction[] = list.map((transaction) => {
+      return { ...transaction, type: type };
+    });
+
+    return listType;
   };
 
   const submitTransaction = async (data: ISubmitTransaction) => {
-    const token = props?.NG_TOKEN;
+    const { ["NG_TOKEN"]: token } = parseCookies();
+    console.log(data);
+
+    const { value } = data;
+
+    console.log(typeof Number(value));
 
     if (token) {
       try {
         api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
         const {
           data: { transaction },
-        } = await api.post("/users/cashout", data);
+        } = await api.post<ISubmitTransactionResponse>("/users/cashout", {
+          ...data,
+          value: Number(value),
+        });
         setTransactions([
-          ...transactions,
           {
-            value: transaction.value,
+            type: "Cash Out",
             id: transaction.id,
+            value: transaction.value,
             createdAt: transaction.createdAt,
           },
+          ...transactions,
         ]);
+        setFilterTransactions([
+          {
+            type: "Cash Out",
+            id: transaction.id,
+            value: transaction.value,
+            createdAt: transaction.createdAt,
+          },
+          ...transactions,
+        ]);
+        reset();
       } catch (err) {
+        reset();
         console.log(err);
+        if (err instanceof AxiosError) {
+          if (err.response?.data.message === "User not exists") {
+            return toast.error(
+              "O usuário informado não existe, informe um usuário da nossa plataforma"
+            );
+          } else if (
+            err.response?.data.message ===
+            "Not enough balance for this transaction"
+          ) {
+            return toast.error(
+              "Você não tem saldo suficiente para esta transação"
+            );
+          }
+          return toast.error("Ops algo inesperado aconteceu, tente novamente");
+        }
       }
     }
   };
@@ -100,13 +155,20 @@ const DashboardProvider = ({ children, props }: IProps) => {
   return (
     <DashboardContext.Provider
       value={{
-        listAllTransactions,
         transactions,
+        setTransactions,
         register,
         handleSubmit,
         submitTransaction,
         user,
         setUser,
+        listAllTransactions,
+        filterType,
+        setFilterType,
+        filterTransactions,
+        setFilterTransactions,
+        filterTransactionType,
+        filterTransactionDate,
       }}
     >
       {children}
@@ -115,14 +177,3 @@ const DashboardProvider = ({ children, props }: IProps) => {
 };
 
 export default DashboardProvider;
-
-export const getServerSideProps = (context: any) => {
-  const cookies = parseCookies(context);
-  console.log(context);
-
-  return {
-    props: {
-      NG_TOKEN: cookies.NG_TOKEN,
-    },
-  };
-};

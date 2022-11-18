@@ -1,22 +1,16 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext } from "react";
 import { useRouter } from "next/router";
 
 import { toast } from "react-toastify";
-import { setCookie, parseCookies } from "nookies";
+import { setCookie } from "nookies";
 
 import api from "../../services/api";
 
-import {
-  ILoginSubmit,
-  IProps,
-  IRegisterSubmit,
-  IUserContext,
-} from "./types";
+import { ILoginSubmit, IProps, IRegisterSubmit, IUserContext } from "./types";
 
 export const UserContext = createContext<IUserContext>({} as IUserContext);
 
-const UserProvider = ({ children, props }: IProps) => {
-
+const UserProvider = ({ children }: IProps) => {
   const router = useRouter();
 
   function submitLogin(data: ILoginSubmit) {
@@ -24,14 +18,20 @@ const UserProvider = ({ children, props }: IProps) => {
       .post("/session", data)
       .then(({ data: { token } }) => {
         setCookie(null, "NG_TOKEN", token, {
-          path: "/dashboard",
-          maxAge: 86400,
+          path: "/",
+          maxAge: 86400, // 24 hours
         });
+
         toast.success("Login realizado com sucesso");
+
         router.push("/dashboard");
       })
       .catch((err) => {
-        toast.error("Usuário ou senha incorretos!");
+        if (err.response.data.message === "Invalid user or password") {
+          return toast.error("Usuário ou senha incorretos!");
+        }
+
+        return toast.error("Ops, algo deu errardo, tente novamente!");
       });
   }
 
@@ -43,8 +43,12 @@ const UserProvider = ({ children, props }: IProps) => {
         toast.success("Conta criada com sucesso");
         router.push("/login");
       })
-      .catch(() => {
-        toast.error("Ops! Algo deu errado");
+      .catch((err) => {
+        console.log(err);
+        if (err.response.data.message === "Username already exists") {
+          return toast.error("Já existe um usuário cadastrado com este nome!");
+        }
+        return toast.error("Ops! Algo deu errado");
       });
   }
 
@@ -61,14 +65,3 @@ const UserProvider = ({ children, props }: IProps) => {
 };
 
 export default UserProvider;
-
-export const getServerSideProps = (context: any) => {
-  const cookies = parseCookies(context);
-  console.log(context);
-
-  return {
-    props: {
-      NG_TOKEN: cookies.NG_TOKEN,
-    },
-  };
-};

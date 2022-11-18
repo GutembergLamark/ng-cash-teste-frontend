@@ -28,7 +28,7 @@ const Modals = () => {
 
   return (
     <>
-      <Button callback={onOpen}>Realizar Transerência</Button>
+      <Button callback={onOpen}>Transferir</Button>
 
       <Modal
         initialFocusRef={initialRef}
@@ -93,7 +93,7 @@ const Modals = () => {
                   }}
                   borderRadius={6}
                   transition={"all 0.3s"}
-                  type={"number"}
+                  type={"text"}
                   placeholder="Valor da transação"
                   {...register("value")}
                   required
@@ -103,7 +103,7 @@ const Modals = () => {
                   justifyContent={"center"}
                   alignItems={"center"}
                 >
-                  <Button type="submit" dark="dark">
+                  <Button type={"submit"} dark={"dark"} callback={onClose}>
                     Transferir
                   </Button>
                 </ModalFooter>
