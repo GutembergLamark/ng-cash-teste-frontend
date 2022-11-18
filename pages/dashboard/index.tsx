@@ -13,11 +13,11 @@ import { DashboardContext } from "../../contexts/DashboardProvider";
 
 import Modals from "../../components/Modals";
 
-import { IProps } from "./types";
+import { IPropsDashboard } from "../../contexts/DashboardProvider/types";
 
 import { Main } from "../../styles/Dashboard/style";
 
-const Dashboard = ({ dataUser }: IProps) => {
+const Dashboard = ({ dataUser }: IPropsDashboard) => {
   const {
     transactions,
     user,

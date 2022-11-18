@@ -10,6 +10,10 @@ export interface IProps {
   children: ReactNode;
 }
 
+export interface IPropsDashboard {
+  dataUser: IUser;
+}
+
 export interface ITransaction {
   type?: string;
   id: string;
@@ -65,5 +69,5 @@ export interface IDashboardContext {
   filterTransactions: ITransaction[];
   setFilterTransactions: Dispatch<SetStateAction<ITransaction[]>>;
   filterTransactionType: (type?: string) => void;
-  filterTransactionDate: (date: string) => void
+  filterTransactionDate: (date: string) => void;
 }
