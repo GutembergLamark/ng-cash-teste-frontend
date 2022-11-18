@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import DashboardProvider from "./DashboardProvider";
-import UserProvider from "./UserProvider";
+import UserProvider from "./FormProvider";
 
 interface IProps {
   children: ReactNode;
