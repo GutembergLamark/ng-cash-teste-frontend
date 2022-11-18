@@ -187,7 +187,9 @@ const Dashboard = ({ dataUser }: IPropsDashboard) => {
                     >
                       {transaction.type}
                     </h3>
-                    <strong>R$ {transaction.value}</strong>
+                    <strong>
+                      R$ {transaction.value.toString().replace(".", ",")}
+                    </strong>
                     <p>{dateFormated}</p>
                   </li>
                 );
