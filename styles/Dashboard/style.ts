@@ -55,13 +55,25 @@ export const Main = styled.main`
 
       strong {
         font-size: 1.25rem;
+        width: max-content;
+
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: hidden;
+      }
+
+      .user-name {
+        display: flex;
+        justify-content: center;
+
+        width: 100%;
       }
 
       h1 {
         font-size: 1.25rem;
         text-align: center;
 
-        width: 80%;
+        width: max-content;
 
         white-space: nowrap;
         overflow: hidden;
@@ -74,10 +86,12 @@ export const Main = styled.main`
         justify-content: space-between;
         flex-direction: row;
 
+        .user-name {
+          justify-content: left;
+        }
+
         h1 {
           font-size: 1.5rem;
-
-          width: 50%;
         }
       }
     }

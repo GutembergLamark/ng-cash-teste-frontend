@@ -3,9 +3,12 @@ import { useContext, useEffect, useState } from "react";
 import { GetServerSideProps } from "next";
 
 import { RiEyeLine, RiEyeCloseLine } from "react-icons/ri";
+import { MdContentCopy } from "react-icons/md";
 import { parseCookies } from "nookies";
 import { Menu, MenuButton, MenuList, MenuItem, Button } from "@chakra-ui/react";
 import { ChevronDownIcon } from "@chakra-ui/icons";
+import copy from "copy-to-clipboard";
+import { toast } from "react-toastify";
 
 import api from "../../services/api";
 
@@ -56,7 +59,17 @@ const Dashboard = ({ dataUser }: IPropsDashboard) => {
         <section>
           {see ? (
             <div className="info-user">
-              <h1>Olá, @{user?.username}</h1>
+              <div className="user-name">
+                <h1>Olá, @{user?.username}</h1>
+                <MdContentCopy
+                  onClick={() => {
+                    copy(user!.username);
+                    toast.success(
+                      "Username copiado para área de transferência"
+                    );
+                  }}
+                />
+              </div>
               <div>
                 <strong>
                   {user?.account.balance.toLocaleString("pt-br", {
@@ -69,7 +82,17 @@ const Dashboard = ({ dataUser }: IPropsDashboard) => {
             </div>
           ) : (
             <div className="info-user">
-              <h1>Olá, @{user?.username}</h1>
+              <div className="user-name">
+                <h1>Olá, @{user?.username}</h1>
+                <MdContentCopy
+                  onClick={() => {
+                    copy(user!.username);
+                    toast.success(
+                      "Username copiado para área de transferência"
+                    );
+                  }}
+                />
+              </div>
               <div>
                 <strong>--------</strong>
                 <RiEyeCloseLine size={"25px"} onClick={() => setSee(!see)} />
