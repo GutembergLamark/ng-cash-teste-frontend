@@ -9,6 +9,7 @@ import { Menu, MenuButton, MenuList, MenuItem, Button } from "@chakra-ui/react";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import copy from "copy-to-clipboard";
 import { toast } from "react-toastify";
+import { motion } from "framer-motion";
 
 import api from "../../services/api";
 
@@ -56,7 +57,12 @@ const Dashboard = ({ dataUser }: IPropsDashboard) => {
   return (
     <>
       <Main>
-        <section>
+        <motion.section
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 1.5 }}
+        >
           {see ? (
             <div className="info-user">
               <div className="user-name">
@@ -227,7 +233,7 @@ const Dashboard = ({ dataUser }: IPropsDashboard) => {
           )}
 
           <Modals />
-        </section>
+        </motion.section>
       </Main>
     </>
   );
