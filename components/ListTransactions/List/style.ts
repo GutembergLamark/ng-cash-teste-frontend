@@ -12,19 +12,6 @@ export const Container = styled.ul`
 
   overflow-y: scroll;
 
-  .container-empty {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    height: 30%;
-
-    .empty-transaction {
-      color: var(--white);
-      text-align: center;
-    }
-  }
-
   &::-webkit-scrollbar-thumb {
     width: 8px;
     background-color: var(--gray);
@@ -38,5 +25,18 @@ export const Container = styled.ul`
     background-color: var(--black-1);
 
     border-radius: 5px;
+  }
+`;
+
+export const Empty = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  height: 30%;
+
+  .empty-transaction {
+    color: var(--white);
+    text-align: center;
   }
 `;
