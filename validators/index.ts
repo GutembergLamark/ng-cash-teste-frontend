@@ -6,7 +6,10 @@ export const schemaLogin = yup.object().shape({
 });
 
 export const schemaRegister = yup.object().shape({
-  username: yup.string().required("O nome do usuário é obrigatório"),
+  username: yup
+    .string()
+    .required("O nome do usuário é obrigatório")
+    .min(3, "O usuário precisa ter no mínimo 3 caracters"),
   password: yup
     .string()
     .required("A senha é obrigatória")
