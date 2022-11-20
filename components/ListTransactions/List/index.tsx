@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { DashboardContext } from "../../../contexts/DashboardProvider";
 import Transaction from "../Transaction";
-import { Container } from "./style";
+import { Container, Empty } from "./style";
 
 const List = () => {
   const { filterTransactions } = useContext(DashboardContext);
@@ -15,9 +15,9 @@ const List = () => {
           ))}
         </Container>
       ) : (
-        <div className="container-empty">
+        <Empty>
           <h1 className="empty-transaction">Ainda não existem transações...</h1>
-        </div>
+        </Empty>
       )}
     </>
   );
