@@ -1,34 +1,108 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# NG Cash Front End
 
-## Getting Started
+<br/>
+<br/>
 
-First, run the development server:
+<h2 align="center">🔨 Tecnologias utilizadas na aplicação</h2>
+
+<br/>
+
+- ### TypeScript - Linguagem
+- ### NextJs - Framework
+- ### Chackra, Styled components e Framer motion - Bibliotecas de estilização
+- ### Reack hook form - Manipulação de formulários
+- ### Axios - Consumo de API
+- ### Yup - Validação e serialização
+- ### Nookies - Manipulação dos cookies
+- ### React icons - Ícones
+- ### React copy to clipboard - Cópia de palavras
+
+<br/> 
+ 
+## Links de acesso
+
+- <a href="https://github.com/GutembergLamark/ng-cash-teste-frontend">Repositório</a>
+
+#
+
+## ✅ Como executar a aplicação localmente
+
+<br/>
+
+### Algumas ferramentas são essencias para a execução da aplicação, são elas:
+
+- [Node](https://nodejs.org/en/)
+- [Yarn](https://classic.yarnpkg.com/lang/en/docs/install/#debian-stable) (opcional)
+
+<h3>1 - Primero passo:</h3>
+
+#
+
+<p>Vamos instalar as dependências do projeto:</p>
+
+<br/>
 
 ```bash
-npm run dev
-# or
-yarn dev
+# Abra o seu terminal na raiz do projeto e execute o seguinte comando:
+
+$yarn
+
+ou
+
+$npm install
+
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+<br/>
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+<h3>2 - Segundo passo:</h3>
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+#
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+<p>Vamos buildar o projeto para ter uma experiência completa da aplicação em produção:</p>
 
-## Learn More
+<br/>
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+# Abra o seu terminal na raiz do projeto e execute o seguinte comando:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+$yarn build
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+ou
 
-## Deploy on Vercel
+$npm run build
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+<h3>3 - Terceiro passo:</h3>
+
+#
+
+<p>Agora estamos prontos para iniciar a aplicação:</p>
+
+<br/>
+
+```bash
+# Abra o seu terminal na raiz do projeto e execute o seguinte comando:
+
+$yarn start
+
+ou
+
+$npm run start
+
+```
+
+<br/>
+
+<h3>4 - Quarto passo:</h3>
+
+#
+
+<p>Abrindo o projeto:</p>
+
+<br/>
+
+#### Abra o seu navegador padrão na seguinte url: <a href="http://localhost:3000">http://localhost:3000</a>
+
+#

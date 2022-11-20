@@ -44,7 +44,6 @@ const UserProvider = ({ children }: IProps) => {
         router.push("/login");
       })
       .catch((err) => {
-        console.log(err);
         if (err.response.data.message === "Username already exists") {
           return toast.error("Já existe um usuário cadastrado com este nome!");
         }

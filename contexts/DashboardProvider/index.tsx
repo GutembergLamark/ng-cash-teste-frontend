@@ -47,7 +47,6 @@ const DashboardProvider = ({ children }: IProps) => {
         const dateFormated = `${createdAt.getFullYear()}-${
           createdAt.getMonth() + 1
         }-${createdAt.getDate()}`;
-        console.log(dateFormated);
 
         return dateFormated === date;
       })
@@ -96,7 +95,6 @@ const DashboardProvider = ({ children }: IProps) => {
 
   const submitTransaction = async (data: ISubmitTransaction) => {
     const { ["NG_TOKEN"]: token } = parseCookies();
-    console.log(data);
 
     const { value } = data;
 
@@ -132,7 +130,6 @@ const DashboardProvider = ({ children }: IProps) => {
         reset();
       } catch (err) {
         reset();
-        console.log(err);
         if (err instanceof AxiosError) {
           if (err.response?.data.message === "User not exists") {
             return toast.error(
