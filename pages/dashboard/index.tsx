@@ -1,14 +1,9 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 
 import { GetServerSideProps } from "next";
 
-import { RiEyeLine, RiEyeCloseLine } from "react-icons/ri";
-import { MdContentCopy } from "react-icons/md";
 import { parseCookies } from "nookies";
-import { Menu, MenuButton, MenuList, MenuItem, Button } from "@chakra-ui/react";
-import { ChevronDownIcon } from "@chakra-ui/icons";
-import copy from "copy-to-clipboard";
-import { toast } from "react-toastify";
+
 import { motion } from "framer-motion";
 
 import api from "../../services/api";
@@ -16,26 +11,19 @@ import api from "../../services/api";
 import { DashboardContext } from "../../contexts/DashboardProvider";
 
 import Modals from "../../components/Modals";
+import Info from "../../components/Info";
+import FilterType from "../../components/Filter/FilterType";
+import FilterDate from "../../components/Filter/FilterDate";
+import List from "../../components/ListTransactions/List";
 
 import { IPropsDashboard } from "../../contexts/DashboardProvider/types";
 
 import { Main } from "../../styles/Dashboard/style";
+import Transaction from "../../components/ListTransactions/Transaction";
 
 const Dashboard = ({ dataUser }: IPropsDashboard) => {
-  const {
-    transactions,
-    user,
-    setUser,
-    listAllTransactions,
-    filterType,
-    setFilterType,
-    filterTransactions,
-    filterTransactionType,
-    filterTransactionDate,
-  } = useContext(DashboardContext);
-
-  const [see, setSee] = useState(true);
-  const [date, setDate] = useState("false");
+  const { setUser, listAllTransactions, transactions } =
+    useContext(DashboardContext);
 
   useEffect(() => {
     listAllTransactions(dataUser);
@@ -63,175 +51,13 @@ const Dashboard = ({ dataUser }: IPropsDashboard) => {
           exit={{ opacity: 0 }}
           transition={{ duration: 1.5 }}
         >
-          {see ? (
-            <div className="info-user">
-              <div className="user-name">
-                <h1>Olá, @{user?.username}</h1>
-                <MdContentCopy
-                  onClick={() => {
-                    copy(user!.username);
-                    toast.success(
-                      "Username copiado para área de transferência"
-                    );
-                  }}
-                />
-              </div>
-              <div>
-                <strong>
-                  {user?.account.balance.toLocaleString("pt-br", {
-                    style: "currency",
-                    currency: "BRL",
-                  })}
-                </strong>
-                <RiEyeLine size={"25px"} onClick={() => setSee(!see)} />
-              </div>
-            </div>
-          ) : (
-            <div className="info-user">
-              <div className="user-name">
-                <h1>Olá, @{user?.username}</h1>
-                <MdContentCopy
-                  onClick={() => {
-                    copy(user!.username);
-                    toast.success(
-                      "Username copiado para área de transferência"
-                    );
-                  }}
-                />
-              </div>
-              <div>
-                <strong>--------</strong>
-                <RiEyeCloseLine size={"25px"} onClick={() => setSee(!see)} />
-              </div>
-            </div>
-          )}
-
+          <Info />
           <h2>Transações recentes</h2>
           <div className="dropdown-filter">
-            <Menu>
-              <MenuButton
-                as={Button}
-                rightIcon={<ChevronDownIcon />}
-                color="var(--black)"
-                fontSize="1rem"
-                p={12}
-                bgColor="#eee"
-                borderRadius={5}
-                maxWidth="145px"
-                onClick={() => {
-                  setDate("");
-                  setFilterType("Todos");
-                  filterTransactionType();
-                }}
-              >
-                {filterType}
-              </MenuButton>
-              <MenuList
-                display="flex"
-                flexDirection="column"
-                zIndex="10"
-                bgColor={"var(--black)"}
-                borderRadius={5}
-              >
-                {filterType !== "Todos" && (
-                  <MenuItem
-                    color="white"
-                    bgColor={"var(--black)"}
-                    textAlign="left"
-                    _hover={{ bgColor: "var(--black-1)" }}
-                    width="100%"
-                    p={12}
-                    borderRadius={5}
-                    onClick={() => {
-                      setFilterType("Todos");
-                      filterTransactionType();
-                    }}
-                  >
-                    Todos
-                  </MenuItem>
-                )}
-                {filterType !== "Cash In" && (
-                  <MenuItem
-                    color="white"
-                    bgColor={"var(--black)"}
-                    textAlign="left"
-                    _hover={{ bgColor: "var(--black-1)" }}
-                    width="100vw"
-                    p={12}
-                    borderRadius={5}
-                    onClick={() => {
-                      setFilterType("Cash In");
-                      filterTransactionType("Cash In");
-                    }}
-                  >
-                    Cash In
-                  </MenuItem>
-                )}
-
-                {filterType !== "Cash Out" && (
-                  <MenuItem
-                    color="white"
-                    bgColor={"var(--black)"}
-                    textAlign="left"
-                    _hover={{ bgColor: "var(--black-1)" }}
-                    width="100%"
-                    p={12}
-                    borderRadius={5}
-                    onClick={() => {
-                      setFilterType("Cash Out");
-                      filterTransactionType("Cash Out");
-                    }}
-                  >
-                    Cash Out
-                  </MenuItem>
-                )}
-              </MenuList>
-            </Menu>
-            <input
-              type="date"
-              className="filter-date"
-              value={date}
-              onChange={(ev) => {
-                setDate(ev.target.value);
-                filterTransactionDate(ev.target.value);
-              }}
-            />
+            <FilterType />
+            <FilterDate />
           </div>
-          {filterTransactions.length > 0 ? (
-            <ul>
-              {filterTransactions.map((transaction) => {
-                const date = new Date(transaction.createdAt);
-
-                const dateFormated = `${date.getDate()}/
-                ${
-                  date.getMonth() + 1
-                }/${date.getFullYear()} - ${date.getHours()}h${date.getMinutes()}`;
-
-                return (
-                  <li key={transaction.id}>
-                    <h3
-                      className={
-                        transaction.type === "Cash In" ? "cashin" : "cashout"
-                      }
-                    >
-                      {transaction.type}
-                    </h3>
-                    <strong>
-                      R$ {transaction.value.toString().replace(".", ",")}
-                    </strong>
-                    <p>{dateFormated}</p>
-                  </li>
-                );
-              })}
-            </ul>
-          ) : (
-            <div className="container-empty">
-              <h1 className="empty-transaction">
-                Ainda não existem transações...
-              </h1>
-            </div>
-          )}
-
+          <List />
           <Modals />
         </motion.section>
       </Main>

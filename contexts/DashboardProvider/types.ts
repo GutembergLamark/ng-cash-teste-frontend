@@ -70,4 +70,6 @@ export interface IDashboardContext {
   setFilterTransactions: Dispatch<SetStateAction<ITransaction[]>>;
   filterTransactionType: (type?: string) => void;
   filterTransactionDate: (date: string) => void;
+  date: string;
+  setDate: Dispatch<SetStateAction<string>>;
 }

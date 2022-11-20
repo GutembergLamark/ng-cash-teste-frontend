@@ -1,9 +1,10 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useState } from "react";
 
 import { parseCookies } from "nookies";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { toast } from "react-toastify";
+import { AxiosError } from "axios";
 
 import api from "../../services/api";
 import { schemaCreateTransaction } from "../../validators";
@@ -16,8 +17,6 @@ import {
   ITransaction,
   IUser,
 } from "./types";
-import { AxiosError } from "axios";
-import { type } from "os";
 
 export const DashboardContext = createContext<IDashboardContext>(
   {} as IDashboardContext
@@ -30,6 +29,7 @@ const DashboardProvider = ({ children }: IProps) => {
   const [filterTransactions, setFilterTransactions] = useState<ITransaction[]>(
     []
   );
+  const [date, setDate] = useState<string>("");
 
   const {
     reset,
@@ -169,6 +169,8 @@ const DashboardProvider = ({ children }: IProps) => {
         setFilterTransactions,
         filterTransactionType,
         filterTransactionDate,
+        date,
+        setDate,
       }}
     >
       {children}
