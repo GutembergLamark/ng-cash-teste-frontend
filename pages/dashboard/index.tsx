@@ -19,7 +19,6 @@ import List from "../../components/ListTransactions/List";
 import { IPropsDashboard } from "../../contexts/DashboardProvider/types";
 
 import { Main } from "../../styles/Dashboard/style";
-import Transaction from "../../components/ListTransactions/Transaction";
 
 const Dashboard = ({ dataUser }: IPropsDashboard) => {
   const { setUser, listAllTransactions, transactions } =
