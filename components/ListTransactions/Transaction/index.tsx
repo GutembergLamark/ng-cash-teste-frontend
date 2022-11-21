@@ -9,14 +9,18 @@ const Transaction = ({ transaction }: IProps) => {
                   date.getMonth() + 1
                 }/${date.getFullYear()} - ${date.getHours()}h${date.getMinutes()}`;
 
-  const value = Number(transaction.value).toFixed(2);
-
   return (
     <CardTransaction>
       <h3 className={transaction.type === "Cash In" ? "cashin" : "cashout"}>
         {transaction.type}
       </h3>
-      <strong>R$ {value.toString().replace(".", ",")}</strong>
+      <strong>
+        R${" "}
+        {new Intl.NumberFormat("pt-BR", {
+          style: "currency",
+          currency: "BRL",
+        }).format(transaction.value)}
+      </strong>
       <p>{dateFormated}</p>
     </CardTransaction>
   );

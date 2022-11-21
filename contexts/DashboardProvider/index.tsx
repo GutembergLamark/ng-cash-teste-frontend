@@ -98,8 +98,6 @@ const DashboardProvider = ({ children }: IProps) => {
 
     const { value } = data;
 
-    console.log(typeof Number(value));
-
     if (token) {
       try {
         api.defaults.headers.common["Authorization"] = `Bearer ${token}`;

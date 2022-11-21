@@ -7,6 +7,7 @@ import { setCookie } from "nookies";
 import api from "../../services/api";
 
 import { ILoginSubmit, IProps, IRegisterSubmit, IUserContext } from "./types";
+import { AxiosError } from "axios";
 
 export const UserContext = createContext<IUserContext>({} as IUserContext);
 
@@ -27,11 +28,12 @@ const UserProvider = ({ children }: IProps) => {
         router.push("/dashboard");
       })
       .catch((err) => {
-        if (err.response.data.message === "Invalid user or password") {
-          return toast.error("Usuário ou senha incorretos!");
+        if (err instanceof AxiosError) {
+          if (err.response?.data.message === "Invalid user or password") {
+            return toast.error("Usuário ou senha incorretos!");
+          }
+          return toast.error("Ops, algo deu errardo, tente novamente!");
         }
-
-        return toast.error("Ops, algo deu errardo, tente novamente!");
       });
   }
 
@@ -44,10 +46,14 @@ const UserProvider = ({ children }: IProps) => {
         router.push("/login");
       })
       .catch((err) => {
-        if (err.response.data.message === "Username already exists") {
-          return toast.error("Já existe um usuário cadastrado com este nome!");
+        if (err instanceof AxiosError) {
+          if (err.response?.data.message === "Username already exists") {
+            return toast.error(
+              "Já existe um usuário cadastrado com este nome!"
+            );
+          }
+          return toast.error("Ops! Algo deu errado");
         }
-        return toast.error("Ops! Algo deu errado");
       });
   }
 
