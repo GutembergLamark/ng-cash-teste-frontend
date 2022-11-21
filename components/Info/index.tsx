@@ -29,10 +29,10 @@ const Info = () => {
         {see ? (
           <div>
             <strong>
-              {user?.account.balance.toLocaleString("pt-br", {
+              {new Intl.NumberFormat("pt-BR", {
                 style: "currency",
                 currency: "BRL",
-              })}
+              }).format(user?.account.balance!)}
             </strong>
             <RiEyeLine size={"25px"} onClick={() => setSee(!see)} />
           </div>
